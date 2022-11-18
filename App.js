@@ -2,6 +2,7 @@ import "./style.css";
 import * as THREE from "three";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { LoadingBar } from "./libs/LoadingBar";
+import { Plane } from "three";
 
 function getAspectRatio() {
   return window.innerWidth / window.innerHeight;
@@ -60,7 +61,6 @@ class App {
         const envMap = pmremGenerator.fromEquirectangular(texture).texture;
         pmremGenerator.dispose();
         this.scene.environment = envMap;
-        console.log(this.scene.environment);
       },
       undefined,
       (err) => {
@@ -69,7 +69,12 @@ class App {
     );
   }
 
-  load() {}
+  load() {
+    this.loading = true;
+    this.loadingBar.visible = true;
+    this.loadSkyBox();
+    this.plane = new Plane(this); 
+  }
 
   loadSkyBox() {}
 
