@@ -29,7 +29,6 @@ class App {
     this.cameraTarget = new THREE.Vector3(8, 0, 0);
 
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x100000);
     this.scene.add(this.cameraController);
 
     const ambient = new THREE.HemisphereLight(0xffffff, 0xbbbfff, 1);
@@ -76,7 +75,21 @@ class App {
     this.plane = new Plane(this); 
   }
 
-  loadSkyBox() {}
+  loadSkyBox() {
+    this.scene.background = new THREE.CubeTextureLoader()
+    .setPath(`${this.assetsPath}/paintedsky/`)
+    .load([
+        'px.jpg',
+        'nx.jpg',
+        'py.jpg',
+        'ny.jpg',
+        'pz.jpg',
+        'nz.jpg'
+    ], ()=>{
+        this.renderer.setAnimationLoop(this.render.bind(this));
+    });
+
+  }
 
   resize() {
     this.camera.aspect = getAspectRatio();
