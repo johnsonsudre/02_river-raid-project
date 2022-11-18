@@ -14,11 +14,17 @@ class App {
     this.loadingBar = new LoadingBar();
     this.loadingBar.visible = false;
 
-    this.clock = new THREE.Clock();
+    this.clock = new THREE.Clock(); // to track the time elapsed in the game
 
     this.assetsPath = "/assets";
 
-    this.camera = new THREE.PerspectiveCamera(60, getAspectRatio(), 0.02, 10);
+    this.camera = new THREE.PerspectiveCamera(70, getAspectRatio(), 0.5, 100);
+    this.camera.position.set(-4, 0, 0)
+    this.camera.lookAt(8,0,0);
+
+    this.cameraController = new THREE.Object3D();
+    this.cameraController.add(this.camera);
+    this.cameraTarget = new THREE.Vector3(8,0,0);
 
     window.addEventListener("resize", this.resize.bind(this));
 
