@@ -29,9 +29,13 @@ class Plane {
         this.scene.add(plane.scene);
         this.mesh = plane.scene;
         this.velocity = new Vector3(0, 0, 0.1);
+        this.propellor = this.mesh.getObjectByName('propellor');
+        console.log(this.propellor)
         this.ready = true;
       },
-      (xhr) => {},
+      (xhr) => {
+        this.loadingBar.update('plane',xhr.loaded, xhr.total);
+      },
       (err) => {}
     );
   }
