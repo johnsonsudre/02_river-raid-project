@@ -21,12 +21,12 @@ class App {
     this.assetsPath = "/assets";
 
     this.camera = new THREE.PerspectiveCamera(70, getAspectRatio(), 0.5, 10000);
-    this.camera.position.set(-4, 0, 0);
-    this.camera.lookAt(8, 0, 0);
+    this.camera.position.set(0, 10, 5);
+    this.camera.lookAt(0, 0, 0);
 
     this.cameraController = new THREE.Object3D();
     this.cameraController.add(this.camera);
-    this.cameraTarget = new THREE.Vector3(8, 0, 0);
+    this.cameraTarget = new THREE.Vector3(0, 0, 1);
 
     this.scene = new THREE.Scene();
     this.scene.add(this.cameraController);
@@ -73,7 +73,6 @@ class App {
     this.loadingBar.visible = true;
     this.loadSkyBox();
     this.plane = new Plane(this);
-    console.log(this.plane);
   }
 
   loadSkyBox() {
@@ -93,7 +92,16 @@ class App {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
-  updateCamera() {}
+  updateCamera() {
+    if (this.plane.mesh) {
+        this.cameraController.position.copy(this.plane.mesh.position);
+        this.cameraController.position.y = 0;
+        this.cameraTarget.copy(this.plane.mesh.position);
+        this.cameraTarget.z -= 7;
+        this.camera.lookAt(this.cameraTarget);
+    }
+
+  }
 
   render() {
     if (this.loading) {
