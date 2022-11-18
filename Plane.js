@@ -41,10 +41,10 @@ class Plane {
 
   update(time) {
     if (this.propellor !== undefined) {
-      this.propellor.rotateZ(1);
+      this.propellor.rotateZ(10);
     }
     if (this.plane !== undefined) {
-      this.plane.rotation.set(0, 0, Math.sin(time * 3) * 0.05, "XYZ");
+      this.plane.rotation.set(0, 0, Math.sin(time) * 0.05, "XYZ");
       this.plane.position.y = Math.cos(time / 0.25) * 0.05;
     }
   }

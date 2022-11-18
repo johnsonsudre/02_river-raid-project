@@ -8,7 +8,7 @@ function getAspectRatio() {
   return window.innerWidth / window.innerHeight;
 }
 
-class App {
+class Game {
   constructor() {
     const container = document.createElement("div");
     document.body.appendChild(container);
@@ -120,4 +120,4 @@ class App {
   }
 }
 
-export { App };
+export { Game };
