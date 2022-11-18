@@ -93,14 +93,13 @@ class App {
   }
 
   updateCamera() {
-    if (this.plane.mesh) {
-        this.cameraController.position.copy(this.plane.mesh.position);
-        this.cameraController.position.y = 0;
-        this.cameraTarget.copy(this.plane.mesh.position);
-        this.cameraTarget.z -= 7;
-        this.camera.lookAt(this.cameraTarget);
+    if (this.plane.plane) {
+      this.cameraController.position.copy(this.plane.plane.position);
+      this.cameraController.position.y = 0;
+      this.cameraTarget.copy(this.plane.plane.position);
+      this.cameraTarget.z -= 7;
+      this.camera.lookAt(this.cameraTarget);
     }
-
   }
 
   render() {
@@ -108,13 +107,12 @@ class App {
       if (this.plane.ready) {
         this.loading = false;
         this.loadingBar.visible = false;
+      } else {
       }
-    } else {
       return;
     }
 
     const time = this.clock.getElapsedTime();
-
     this.plane.update(time);
     this.updateCamera();
 

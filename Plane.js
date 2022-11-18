@@ -2,11 +2,11 @@ import { Vector3 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 class Plane {
-  constructor(context) {
-    this.context = context;
-    this.assetsPath = context.assetsPath;
-    this.loadingBar = context.loadingBar;
-    this.scene = context.scene;
+  constructor(game) {
+    this.game = game;
+    this.assetsPath = game.assetsPath;
+    this.loadingBar = game.loadingBar;
+    this.scene = game.scene;
     this.load();
     this.tmpPos = new Vector3();
   }
@@ -25,22 +25,29 @@ class Plane {
     this.ready = false;
     loader.load(
       "cartoon_plane.glb",
-      (plane) => {
-        this.scene.add(plane.scene);
-        this.mesh = plane.scene;
+      (gltf) => {
+        this.scene.add(gltf.scene);
+        this.plane = gltf.scene;
         this.velocity = new Vector3(0, 0, 0.1);
-        this.propellor = this.mesh.getObjectByName('propellor');
-        console.log(this.propellor)
+        this.propellor = this.plane.getObjectByName("propellor");
         this.ready = true;
       },
       (xhr) => {
-        this.loadingBar.update('plane',xhr.loaded, xhr.total);
+        this.loadingBar.update("plane", xhr.loaded, xhr.total);
       },
       (err) => {}
     );
   }
 
-  update(time) {}
+  update(time) {
+    if (this.propellor !== undefined) {
+      this.propellor.rotateZ(1);
+    }
+    if (this.plane !== undefined) {
+      this.plane.rotation.set(0, 0, Math.sin(time * 3) * 0.05, "XYZ");
+      this.plane.position.y = Math.cos(time / 0.25) * 0.05;
+    }
+  }
 }
 
 export { Plane };
