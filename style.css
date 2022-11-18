@@ -1,18 +1,51 @@
 html,
-    body,
-    div {
-      margin: 0;
-      padding: 0;
-      border: 0;
-      font-size: 100%;
-      font: inherit;
-      vertical-align: baseline;
-      font-family: sans-serif;
-    }
-    a, a:link {
-      text-decoration: none;
-      color: white;
-    }
-    a:hover {
-      color:greenyellow
-    }
+body,
+div {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  font-family: sans-serif;
+}
+a,
+a:link {
+  text-decoration: none;
+  color: white;
+}
+a:hover {
+  color: greenyellow;
+}
+
+#playBtn {
+  position: absolute;
+  /* width: 180px;
+  height: 100px; */
+  /* font-family: "RocknRoll One", sans-serif; */
+  /* font-size: 40px; */
+  top: 100px;
+  padding: 3%;
+  padding-left: 10%;
+  padding-right: 10%;
+  border: none;
+  border-radius: 3%;
+  background-color: 0xdfffff;
+  left: 50%;
+  transform: translateX(-50%);
+}
+#playBtn :hover {
+  background-color: 0xcccccc;
+  color: blueviolet;
+}
+#instructions {
+  position: absolute;
+  top: 250px;
+  /* font-size: 30px; */
+  /* width: 300px; */
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+}

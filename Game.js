@@ -46,7 +46,7 @@ class Game {
 
     document.addEventListener("keydown", this.keyDown.bind(this));
     document.addEventListener("keyup", this.keyUp.bind(this));
-    
+
     document.addEventListener("touchstart", this.mouseDown.bind(this));
     document.addEventListener("touchend", this.mouseUp.bind(this));
     document.addEventListener("mousedown", this.mouseDown.bind(this));
@@ -54,6 +54,9 @@ class Game {
 
     this.spaceKey = false;
     this.active = false;
+
+    const btn = document.getElementById("playBtn");
+    btn.addEventListener("click", this.startGame.bind(this));
 
     window.addEventListener("resize", this.resize.bind(this));
     container.appendChild(this.renderer.domElement);
@@ -64,6 +67,10 @@ class Game {
   keyUp() {}
   mouseDown() {}
   mouseUp() {}
+
+  startGame() {
+    console.log('startGame');
+  }
 
   setEnvironment() {
     const loader = new RGBELoader().setDataType(THREE.HalfFloatType);
