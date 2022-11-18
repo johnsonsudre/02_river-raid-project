@@ -16,6 +16,8 @@ class App {
 
     this.clock = new THREE.Clock();
 
+    this.assetsPath = "/assets";
+
     this.camera = new THREE.PerspectiveCamera(60, getAspectRatio(), 0.02, 10);
 
     window.addEventListener("resize", this.resize.bind(this));
@@ -29,7 +31,7 @@ class App {
   resize() {
     this.camera.aspect = getAspectRatio();
     this.camera.updateProjectionMatrix(); // so as not to distort the render
-    console.log(window.innerWidth, window.innerHeight)
+    console.log(window.innerWidth, window.innerHeight);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 }
