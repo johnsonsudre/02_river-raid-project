@@ -44,10 +44,26 @@ class Game {
 
     this.load();
 
+    document.addEventListener("keydown", this.keyDown.bind(this));
+    document.addEventListener("keyup", this.keyUp.bind(this));
+    
+    document.addEventListener("touchstart", this.mouseDown.bind(this));
+    document.addEventListener("touchend", this.mouseUp.bind(this));
+    document.addEventListener("mousedown", this.mouseDown.bind(this));
+    document.addEventListener("mouseup", this.mouseUp.bind(this));
+
+    this.spaceKey = false;
+    this.active = false;
+
     window.addEventListener("resize", this.resize.bind(this));
     container.appendChild(this.renderer.domElement);
     this.render();
   }
+
+  keyDown() {}
+  keyUp() {}
+  mouseDown() {}
+  mouseUp() {}
 
   setEnvironment() {
     const loader = new RGBELoader().setDataType(THREE.HalfFloatType);
