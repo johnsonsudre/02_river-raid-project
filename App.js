@@ -19,7 +19,7 @@ class App {
 
     this.assetsPath = "/assets";
 
-    this.camera = new THREE.PerspectiveCamera(70, getAspectRatio(), 0.5, 100);
+    this.camera = new THREE.PerspectiveCamera(70, getAspectRatio(), 0.5, 10000);
     this.camera.position.set(-4, 0, 0);
     this.camera.lookAt(8, 0, 0);
 
@@ -28,6 +28,7 @@ class App {
     this.cameraTarget = new THREE.Vector3(8, 0, 0);
 
     this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color(0x100000);
     this.scene.add(this.cameraController);
 
     const ambient = new THREE.HemisphereLight(0xffffff, 0xbbbfff, 1);
@@ -45,6 +46,7 @@ class App {
 
     window.addEventListener("resize", this.resize.bind(this));
     container.appendChild(this.renderer.domElement);
+    this.render();
   }
 
   setEnvironment() {
@@ -52,25 +54,34 @@ class App {
     const pmremGenerator = new THREE.PMREMGenerator(this.renderer);
     pmremGenerator.compileEquirectangularShader();
 
-    loader.load(this.assetsPath+"/hdr/venice_sunset_1k.hdr", (texture) => {
-      const envMap = pmremGenerator.fromEquirectangular(texture).texture;
-      pmremGenerator.dispose();
-
-      this.scene.environment = envMap;
-    },
-    undefined,
-    err => {
+    loader.load(
+      this.assetsPath + "/hdr/venice_sunset_1k.hdr",
+      (texture) => {
+        const envMap = pmremGenerator.fromEquirectangular(texture).texture;
+        pmremGenerator.dispose();
+        this.scene.environment = envMap;
+        console.log(this.scene.environment);
+      },
+      undefined,
+      (err) => {
         console.error(err.message);
-    });
+      }
+    );
   }
 
   load() {}
 
+  loadSkyBox() {}
+
   resize() {
     this.camera.aspect = getAspectRatio();
     this.camera.updateProjectionMatrix(); // so as not to distort the render
-    console.log(window.innerWidth, window.innerHeight);
     this.renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  render() {
+    const time = this.clock.getElapsedTime();
+    this.renderer.render(this.scene, this.camera);
   }
 }
 
