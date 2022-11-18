@@ -1,5 +1,11 @@
-export class Plane {
-    constructor(context) {
-
-    }
+class Plane {
+  
+  constructor(context) {
+    this.ready = false;
+  }
+  
+  update(time) {
+  }
 }
+
+export { Plane };

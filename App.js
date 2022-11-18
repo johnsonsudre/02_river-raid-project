@@ -2,7 +2,7 @@ import "./style.css";
 import * as THREE from "three";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { LoadingBar } from "./libs/LoadingBar";
-import { Plane } from "three";
+import { Plane } from "./Plane.js";
 
 function getAspectRatio() {
   return window.innerWidth / window.innerHeight;
@@ -72,23 +72,19 @@ class App {
     this.loading = true;
     this.loadingBar.visible = true;
     this.loadSkyBox();
-    this.plane = new Plane(this); 
+    this.plane = new Plane(this);
+    console.log(this.plane);
   }
 
   loadSkyBox() {
     this.scene.background = new THREE.CubeTextureLoader()
-    .setPath(`${this.assetsPath}/paintedsky/`)
-    .load([
-        'px.jpg',
-        'nx.jpg',
-        'py.jpg',
-        'ny.jpg',
-        'pz.jpg',
-        'nz.jpg'
-    ], ()=>{
-        this.renderer.setAnimationLoop(this.render.bind(this));
-    });
-
+      .setPath(`${this.assetsPath}/paintedsky/`)
+      .load(
+        ["px.jpg", "nx.jpg", "py.jpg", "ny.jpg", "pz.jpg", "nz.jpg"],
+        () => {
+          this.renderer.setAnimationLoop(this.render.bind(this));
+        }
+      );
   }
 
   resize() {
@@ -97,8 +93,23 @@ class App {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
+  updateCamera() {}
+
   render() {
+    if (this.loading) {
+      if (this.plane.ready) {
+        this.loading = false;
+        this.loadingBar.visible = false;
+      }
+    } else {
+      return;
+    }
+
     const time = this.clock.getElapsedTime();
+
+    this.plane.update(time);
+    this.updateCamera();
+
     this.renderer.render(this.scene, this.camera);
   }
 }
