@@ -1,5 +1,6 @@
 import "./style.css";
 import * as THREE from "three";
+import { LoadingBar } from "./libs/LoadingBar";
 
 function getAspectRatio() {
   return window.innerWidth / window.innerHeight;
@@ -9,6 +10,11 @@ class App {
   constructor() {
     const container = document.createElement("div");
     document.body.appendChild(container);
+
+    this.loadingBar = new LoadingBar();
+    this.loadingBar.visible = false;
+
+    this.clock = new THREE.Clock();
 
     this.camera = new THREE.PerspectiveCamera(60, getAspectRatio(), 0.02, 10);
 
