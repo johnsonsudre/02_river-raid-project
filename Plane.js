@@ -1,5 +1,7 @@
-import { Vector3 } from "three";
+import { Vector3, AxesHelper } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+
+const SPEED = 0.05;
 
 class Plane {
   constructor(game) {
@@ -28,7 +30,10 @@ class Plane {
       (gltf) => {
         this.scene.add(gltf.scene);
         this.plane = gltf.scene;
-        this.velocity = new Vector3(0, 0, 0.1);
+        const axesHelper = new AxesHelper(2);
+        this.plane.add(axesHelper);
+        this.speed = 0.1;
+        this.velocity = new Vector3(0, 0, 0);
         this.propellor = this.plane.getObjectByName("propellor");
         this.ready = true;
       },
@@ -43,9 +48,23 @@ class Plane {
     if (this.propellor !== undefined) {
       this.propellor.rotateZ(10);
     }
-    if (this.plane !== undefined) {
-      this.plane.rotation.set(0, 0, Math.sin(time) * 0.05, "XYZ");
-      this.plane.position.y = Math.cos(time / 0.25) * 0.05;
+    
+    this.plane.rotation.set(0, 0, Math.sin(time) * 0.05, "XYZ");
+    this.plane.position.y = Math.cos(time / 0.5) * 0.15;
+    
+    if (this.game.active) {
+      if (this.game.leftKey) {
+        this.speed = SPEED;
+      }
+
+      if (this.game.rightKey) {
+        this.speed = -SPEED;
+      }
+      
+      if (this.game.leftKey || this.game.rightKey) {
+        this.plane.position.x += this.speed;
+      }
+    
     }
   }
 }

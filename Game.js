@@ -31,6 +31,12 @@ class Game {
     this.scene = new THREE.Scene();
     this.scene.add(this.cameraController);
 
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    const cube = new THREE.Mesh(geometry, material);
+    cube.position.z -= 10;
+    this.scene.add(cube);
+
     const ambient = new THREE.HemisphereLight(0xffffff, 0xbbbfff, 1);
     this.scene.add(ambient);
 
@@ -53,6 +59,8 @@ class Game {
     document.addEventListener("mouseup", this.mouseUp.bind(this));
 
     this.spaceKey = false;
+    this.leftKey = false;
+    this.rightKey = false;
     this.active = false;
 
     const btn = document.getElementById("playBtn");
@@ -63,13 +71,54 @@ class Game {
     this.render();
   }
 
-  keyDown() {}
-  keyUp() {}
-  mouseDown() {}
-  mouseUp() {}
+  mouseDown(evt) {
+    this.spaceKey = true;
+    this.leftKey = evt.screenX <= window.innerWidth / 2;
+    this.rightKey = evt.screenX > window.innerWidth / 2;
+  }f
+
+  mouseUp(evt) {
+    this.spaceKey = false;
+    this.leftKey = false;
+    this.rightKey = false;
+  }
+
+  keyDown(evt) {
+    switch (evt.keyCode) {
+      case 32:
+        this.spaceKey = true;
+        break;
+      case 37:
+        this.leftKey = true;
+        break;
+      case 39:
+        this.rightKey = true;
+        break;
+    }
+  }
+
+  keyUp(evt) {
+    switch (evt.keyCode) {
+      case 32:
+        this.spaceKey = false;
+        break;
+      case 37:
+        this.leftKey = false;
+        break;
+      case 39:
+        this.rightKey = false;
+        break;
+    }
+  }
 
   startGame() {
-    console.log('startGame');
+    const instructions = document.getElementById("instructions");
+    const btn = document.getElementById("playBtn");
+
+    instructions.style.display = "none";
+    btn.style.display = "none";
+
+    this.active = true;
   }
 
   setEnvironment() {
