@@ -137,7 +137,12 @@ class Game {
 
     this.active = true;
     setTimeout(this.gameOver.bind(this), 2000);
-    console.log(this);
+  }
+
+  incScore() {
+    this.score++;
+    const elm = document.getElementById("score");
+    elm.innerHTML = this.score;
   }
 
   gameOver() {
@@ -223,7 +228,7 @@ class Game {
       this.obstacles.update(this.player.plane.position);
       this.player.update(time);
     }
-    
+
     this.updateCamera();
 
     this.renderer.render(this.scene, this.camera);
