@@ -2,7 +2,8 @@ import "./style.css";
 import * as THREE from "three";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { LoadingBar } from "./libs/LoadingBar";
-import { Plane } from "./Plane.js";
+import { Plane } from "./core/Plane.js";
+import { Obstacles } from "./core/Obstacles";
 
 function getAspectRatio() {
   return window.innerWidth / window.innerHeight;
@@ -73,8 +74,8 @@ class Game {
 
   mouseDown(evt) {
     this.spaceKey = true;
-    this.leftKey = evt.screenX <= window.innerWidth / 2;
-    this.rightKey = evt.screenX > window.innerWidth / 2;
+    this.leftKey = evt.clientX <= window.innerWidth / 2;
+    this.rightKey = evt.clientX > window.innerWidth / 2;
   }f
 
   mouseUp(evt) {
@@ -145,6 +146,7 @@ class Game {
     this.loadingBar.visible = true;
     this.loadSkyBox();
     this.plane = new Plane(this);
+    this.obstacles = new Obstacles(this);
   }
 
   loadSkyBox() {
