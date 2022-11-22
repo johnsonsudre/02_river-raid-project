@@ -76,7 +76,8 @@ class Game {
     this.spaceKey = true;
     this.leftKey = evt.clientX <= window.innerWidth / 2;
     this.rightKey = evt.clientX > window.innerWidth / 2;
-  }f
+  }
+  f;
 
   mouseUp(evt) {
     this.spaceKey = false;
@@ -133,8 +134,23 @@ class Game {
 
     this.player.reset();
     this.obstacles.reset();
-    
+
     this.active = true;
+    setTimeout(this.gameOver.bind(this), 2000);
+    console.log(this);
+  }
+
+  gameOver() {
+    this.active = false;
+
+    const instructions = document.getElementById("instructions");
+    const gameover = document.getElementById("gameover");
+    const btn = document.getElementById("playBtn");
+
+    instructions.style.display = "block";
+    gameover.style.display = "block";
+    btn.style.display = "block";
+    this.player.ready = false;
   }
 
   setEnvironment() {
@@ -203,9 +219,11 @@ class Game {
 
     const time = this.clock.getElapsedTime();
 
-    if (this.active) this.obstacles.update(this.player.plane.position);
-
-    this.player.update(time);
+    if (this.active) {
+      this.obstacles.update(this.player.plane.position);
+      this.player.update(time);
+    }
+    
     this.updateCamera();
 
     this.renderer.render(this.scene, this.camera);
