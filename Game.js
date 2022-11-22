@@ -4,6 +4,7 @@ import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 import { LoadingBar } from "./libs/LoadingBar";
 import { Plane } from "./core/Plane.js";
 import { Obstacles } from "./core/Obstacles";
+import { ImageLoader } from "three";
 
 function getAspectRatio() {
   return window.innerWidth / window.innerHeight;
@@ -141,8 +142,18 @@ class Game {
 
   incScore() {
     this.score++;
+
     const elm = document.getElementById("score");
     elm.innerHTML = this.score;
+  }
+
+  decLive(){
+    this.lives--;
+
+    const elm = document.getElementById("lives");
+    ImageLoader.innerHTML = this.lives;
+    
+    if (this.lives==0) this.gameOver().bind(this);
   }
 
   gameOver() {
