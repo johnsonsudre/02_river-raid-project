@@ -5,4 +5,7 @@ export class Obstacles{
     reset(){
         
     }
+    update(playerPos){
+        // console.log(pos)
+    }
 }
