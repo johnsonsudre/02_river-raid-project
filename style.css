@@ -63,6 +63,7 @@ a:hover {
   top: 10%;
   width: 100%;
   font-size: 60px;
+  display: none;
 }
 #info img {
   height: 64px;
