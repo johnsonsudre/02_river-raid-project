@@ -131,7 +131,7 @@ class Game {
     elm = document.getElementById("score");
     elm.innerHTML = this.score;
 
-    this.plane.reset();
+    this.player.reset();
     this.obstacles.reset();
     
     this.active = true;
@@ -160,7 +160,7 @@ class Game {
     this.loading = true;
     this.loadingBar.visible = true;
     this.loadSkyBox();
-    this.plane = new Plane(this);
+    this.player = new Plane(this);
     this.obstacles = new Obstacles(this);
   }
 
@@ -182,10 +182,10 @@ class Game {
   }
 
   updateCamera() {
-    if (this.plane.plane) {
-      this.cameraController.position.copy(this.plane.plane.position);
+    if (this.player.plane) {
+      this.cameraController.position.copy(this.player.plane.position);
       this.cameraController.position.y = 0;
-      this.cameraTarget.copy(this.plane.plane.position);
+      this.cameraTarget.copy(this.player.plane.position);
       this.cameraTarget.z -= 7;
       this.camera.lookAt(this.cameraTarget);
     }
@@ -193,7 +193,7 @@ class Game {
 
   render() {
     if (this.loading) {
-      if (this.plane.ready && this.obstacles.ready) {
+      if (this.player.ready && this.obstacles.ready) {
         this.loading = false;
         this.loadingBar.visible = false;
       } else {
@@ -202,7 +202,10 @@ class Game {
     }
 
     const time = this.clock.getElapsedTime();
-    this.plane.update(time);
+
+    if (this.active) this.obstacles.update(this.player.plane.position);
+
+    this.player.update(time);
     this.updateCamera();
 
     this.renderer.render(this.scene, this.camera);
