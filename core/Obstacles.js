@@ -1,5 +1,8 @@
 export class Obstacles{
-    constructor(){
+    constructor(game){
+        this.ready = true;
+    }
+    reset(){
         
     }
 }

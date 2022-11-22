@@ -44,6 +44,11 @@ class Plane {
     );
   }
 
+
+  reset(){
+    this.plane.position.set(0,0,0);
+  }
+
   update(time) {
     if (this.propellor !== undefined) {
       this.propellor.rotateZ(10);
