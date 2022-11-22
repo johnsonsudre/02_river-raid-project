@@ -114,11 +114,26 @@ class Game {
 
   startGame() {
     const instructions = document.getElementById("instructions");
+    const gameover = document.getElementById("gameover");
+    const info = document.getElementById("info");
     const btn = document.getElementById("playBtn");
-
     instructions.style.display = "none";
+    gameover.style.display = "none";
+    info.style.display = "block";
     btn.style.display = "none";
 
+    this.lives = 4;
+    this.score = 0;
+
+    let elm = document.getElementById("lives");
+    elm.innerHTML = this.lives;
+
+    elm = document.getElementById("score");
+    elm.innerHTML = this.score;
+
+    this.plane.reset();
+    this.obstacles.reset();
+    
     this.active = true;
   }
 
@@ -178,7 +193,7 @@ class Game {
 
   render() {
     if (this.loading) {
-      if (this.plane.ready) {
+      if (this.plane.ready && this.obstacles.ready) {
         this.loading = false;
         this.loadingBar.visible = false;
       } else {
