@@ -60,11 +60,11 @@ class Plane {
     
     if (this.game.active) {
       if (this.game.leftKey) {
-        this.speed = SPEED;
+        this.speed = -SPEED;
       }
 
       if (this.game.rightKey) {
-        this.speed = -SPEED;
+        this.speed = SPEED;
       }
 
       this.velocity.z -= 0.001;
