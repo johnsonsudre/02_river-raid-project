@@ -137,7 +137,7 @@ class Game {
     this.obstacles.reset();
 
     this.active = true;
-    setTimeout(this.gameOver.bind(this), 2000);
+    setTimeout(this.gameOver.bind(this), 6000);
   }
 
   incScore() {

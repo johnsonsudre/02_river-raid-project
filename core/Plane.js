@@ -47,6 +47,7 @@ class Plane {
 
   reset(){
     this.plane.position.set(0,0,0);
+    this.velocity.set(0,0,0.001);
   }
 
   update(time) {
@@ -65,6 +66,9 @@ class Plane {
       if (this.game.rightKey) {
         this.speed = -SPEED;
       }
+
+      this.velocity.z -= 0.001;
+      this.plane.translateZ(this.velocity.z);
       
       if (this.game.leftKey || this.game.rightKey) {
         this.plane.position.x += this.speed;
