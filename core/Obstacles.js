@@ -22,8 +22,8 @@ export class Obstacles {
       "plant.gltf",
       (gltf) => {
         this.plant = gltf.scene.children[0];
+        this.plant.scale.set(2, 2, 2);
         this.plant.name = "plant";
-        console.log(this.bomb);
         if (this.bomb !== undefined) this.initialize();
       },
       (xhr) => {
@@ -39,8 +39,8 @@ export class Obstacles {
       "bomb.gltf",
       (gltf) => {
         this.bomb = gltf.scene.children[0];
+        this.bomb.scale.set(2, 2, 2);
         this.bomb.name = "bomb";
-        console.log(this.plant !== undefined);
         if (this.plant !== undefined) {
           this.initialize(this);
         }
@@ -55,9 +55,52 @@ export class Obstacles {
   }
 
   initialize() {
-    console.log(this.plant);
-    this.scene.add(this.plant);
-    this.scene.add(this.bomb);
+    this.obstacles = [];
+    const rand = (num) => Math.round(Math.random() * num);
+    const genObstacleStr = (amount) => {
+      let tmpStr = "";
+      while (tmpStr.length < amount) {
+        tmpStr += "-";
+      }
+      const randNum = rand(amount - 1);
+      let obsStr =
+        tmpStr.substring(0, randNum) + "*" + tmpStr.substring(randNum + 1);
+      return obsStr;
+    };
+
+    const numObstacles = 7;
+    const widthSize = 16;
+    const offset = widthSize / (numObstacles - 1);
+    let tmpPosX = -widthSize / 2;
+    let obstaclesSrt = genObstacleStr(numObstacles);
+    console.log(obstaclesSrt);
+
+    let posZ = -10;
+    for (let i = 0; i < 6; i++) {
+      const obstacle = new Group();
+      obstacle.position.z = posZ;
+      obstacle.position.x = 0;
+
+      for (let i = 0; i < numObstacles; i++) {
+        if (obstaclesSrt[i] === "-") {
+          const bomb = this.bomb.clone();
+          bomb.position.x = tmpPosX;
+          obstacle.add(bomb);
+          this.obstacles.push(bomb);
+        } else {
+          const plant = this.plant.clone();
+          plant.position.x = tmpPosX;
+          obstacle.add(plant);
+          this.obstacles.push(plant);
+        }
+        tmpPosX += offset;
+      }
+
+      this.scene.add(obstacle);
+      obstaclesSrt = genObstacleStr(numObstacles);
+      tmpPosX = -widthSize / 2;
+      posZ -= 10;
+    }
   }
   reset() {}
   update(playerPos) {
