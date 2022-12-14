@@ -51,6 +51,7 @@ class Game {
     this.setEnvironment();
 
     this.load();
+    this.loadHUD();
 
     document.addEventListener("keydown", this.keyDown.bind(this));
     document.addEventListener("keyup", this.keyUp.bind(this));
@@ -71,6 +72,11 @@ class Game {
     window.addEventListener("resize", this.resize.bind(this));
     container.appendChild(this.renderer.domElement);
     this.render();
+  }
+
+  loadHUD () {
+    const gameHUD = document.getElementById("game");
+    gameHUD.style.display="block";
   }
 
   mouseDown(evt) {
