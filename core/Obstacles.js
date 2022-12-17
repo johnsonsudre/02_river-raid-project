@@ -82,45 +82,79 @@ export class Obstacles {
     let tmpPosX = -this.config.widthSize / 2;
     let obstaclesSrt = genObstacleStr(this.config.numObstacles);
 
-    let posZ = -10; // depth
+    let posZ = 0; // depth
+    let type;
 
-    for (let i = 0; i < this.config.numRows; i++) {
+    for (let numRow = 0; numRow < this.config.numRows; numRow++) {
       const obstacle = new Group();
-      obstacle.position.z = posZ;
-      obstacle.position.x = 0;
-
-      for (let i = 0; i < this.config.numObstacles; i++) {
+      posZ -= 10;
+      for (let item = 0; item < this.config.numObstacles; item++) {
         let element;
-        if (obstaclesSrt[i] !== "-") {
+        if (obstaclesSrt[item] !== "-") {
+          type = "plant";
           element = this.plant.clone();
         } else {
+          type = "bomb";
           element = this.bomb.clone();
         }
+        element.name = `row${numRow}-item${item}-${type}`;
+        element.userData.name = element.name;
+        element.userData.type = type;
+        
         element.position.x = tmpPosX;
-        element.userData.hit = false;
-        console.log(element.children.length);
         element.children.forEach((child) => {
           child.visible = true;
         });
         obstacle.add(element);
-        this.obstacles.push(element);
-
         tmpPosX += this.config.offset;
       }
-
+      obstacle.userData.hit = false;
+      obstacle.position.z = posZ;
+      obstacle.position.x = 0;
+      obstacle.name = `obstacles-row${numRow}`;
+      this.obstacles.push(obstacle);
       this.scene.add(obstacle);
       obstaclesSrt = genObstacleStr(this.config.numObstacles);
       tmpPosX = -this.config.widthSize / 2;
-      posZ -= 10;
     }
-
     this.ready = true;
   }
 
-  reset() {}
+  update(posPlayer) {
+    let collisionObstacle;
+    this.obstacles.forEach((obstacle, i) => {
+      if (obstacle.userData.type === "bomb") {
+        obstacle.rotateY(0.01);
+      }
+      const relativePosZ = obstacle.position.z - posPlayer.z;
+      if (Math.abs(relativePosZ) < 2 && !obstacle.userData.hit) {
+        collisionObstacle = obstacle;
+        // console.log(obstacle.userData.hit, relativePosZ);
+      }
+    });
+    if (collisionObstacle !== undefined) {
+      const playerPos = this.game.player.plane.position;
+      collisionObstacle.children.some((child) => {
+        child.getWorldPosition(this.tmpPos);
+        const dist = this.tmpPos.distanceToSquared(playerPos);
+        if (dist < 2) {
+          collisionObstacle.userData.hit = true;
+          this.hit(child);
+          return true;
+        }
+      });
+    }
+  }
 
-  respawnObstacle(obstacle) {}
-  update(playerPos) {
-    // console.log(playerPos)
+  hit(child) {
+    if (child.type) {
+      if (child.userData.type === "plant") {
+        this.game.incScore();
+        console.log("hide");
+        child.visible = false;
+      } else {
+        this.game.decLive();
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
 import { Vector3, AxesHelper } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
-const SPEED = 0.075;
+const SPEED = 0.175;
 
 class Plane {
   constructor(game) {

@@ -140,7 +140,7 @@ class Game {
     elm.innerHTML = this.score;
 
     this.player.reset();
-    this.obstacles.reset();
+    // this.obstacles.reset();
 
     this.active = true;
     setTimeout(this.gameOver.bind(this), 6000);
@@ -157,9 +157,9 @@ class Game {
     this.lives--;
 
     const elm = document.getElementById("lives");
-    ImageLoader.innerHTML = this.lives;
+    elm.innerHTML = this.lives;
     
-    if (this.lives==0) this.gameOver().bind(this);
+    // if (this.lives===0) this.gameOver().bind(this);
   }
 
   gameOver() {
