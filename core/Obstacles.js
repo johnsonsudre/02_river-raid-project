@@ -100,7 +100,7 @@ export class Obstacles {
         element.name = `row${numRow}-item${item}-${type}`;
         element.userData.name = element.name;
         element.userData.type = type;
-        
+
         element.position.x = tmpPosX;
         element.children.forEach((child) => {
           child.visible = true;
@@ -117,7 +117,18 @@ export class Obstacles {
       obstaclesSrt = genObstacleStr(this.config.numObstacles);
       tmpPosX = -this.config.widthSize / 2;
     }
+    this.reset();
     this.ready = true;
+  }
+
+  reset() {
+    this.obstacleSpwan = { pos: 20, offset: 5 };
+    this.obstacles.forEach((obstacle) => this.respawnObstacle(obstacle));
+  }
+
+  respawnObstacle(obstacle) {
+    obstacle.userData.hit = false;
+    obstacle.children.visible = true;
   }
 
   update(posPlayer) {
@@ -137,7 +148,7 @@ export class Obstacles {
       collisionObstacle.children.some((child) => {
         child.getWorldPosition(this.tmpPos);
         const dist = this.tmpPos.distanceToSquared(playerPos);
-        if (dist < 2) {
+        if (dist < 1) {
           collisionObstacle.userData.hit = true;
           this.hit(child);
           return true;
@@ -146,15 +157,12 @@ export class Obstacles {
     }
   }
 
-  hit(child) {
-    if (child.type) {
-      if (child.userData.type === "plant") {
-        this.game.incScore();
-        console.log("hide");
-        child.visible = false;
-      } else {
-        this.game.decLive();
-      }
+  hit(obstacle) {
+    obstacle.visible = false;
+    if (obstacle.userData.type === "plant") {
+      this.game.incScore();
+    } else {
+      this.game.decLive();
     }
   }
 }

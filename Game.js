@@ -33,12 +33,6 @@ class Game {
     this.scene = new THREE.Scene();
     this.scene.add(this.cameraController);
 
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    const cube = new THREE.Mesh(geometry, material);
-    cube.position.z -= 10;
-    this.scene.add(cube);
-
     const ambient = new THREE.HemisphereLight(0xffffff, 0xbbbfff, 1);
     this.scene.add(ambient);
 
@@ -140,10 +134,9 @@ class Game {
     elm.innerHTML = this.score;
 
     this.player.reset();
-    // this.obstacles.reset();
+    this.obstacles.reset();
 
     this.active = true;
-    setTimeout(this.gameOver.bind(this), 6000);
   }
 
   incScore() {
@@ -159,7 +152,7 @@ class Game {
     const elm = document.getElementById("lives");
     elm.innerHTML = this.lives;
     
-    // if (this.lives===0) this.gameOver().bind(this);
+    if (this.lives===0) this.gameOver();
   }
 
   gameOver() {
@@ -173,6 +166,9 @@ class Game {
     gameover.style.display = "block";
     btn.style.display = "block";
     this.player.ready = false;
+    this.obstacles.reset();
+
+
   }
 
   setEnvironment() {

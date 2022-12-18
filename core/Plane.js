@@ -1,4 +1,4 @@
-import { Vector3, AxesHelper } from "three";
+import { Vector3 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 const SPEED = 0.175;
@@ -30,8 +30,6 @@ class Plane {
       (gltf) => {
         this.scene.add(gltf.scene);
         this.plane = gltf.scene;
-        const axesHelper = new AxesHelper(2);
-        this.plane.add(axesHelper);
         this.speed = 0.1;
         this.velocity = new Vector3(0, 0, 0);
         this.propellor = this.plane.getObjectByName("propellor");
