@@ -1,5 +1,6 @@
 import { Vector3, Group } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { Explosion } from "./Explosions";
 import { obstaclesConfig } from "./ObstaclesConfig";
 
 const rand = (num) => Math.round(Math.random() * num);
@@ -34,6 +35,7 @@ export class Obstacles {
     this.load = false;
     this.ready = false;
     this.tmpPos = new Vector3();
+    this.explosions = [];
   }
 
   loadPlant() {
@@ -121,14 +123,25 @@ export class Obstacles {
     this.ready = true;
   }
 
+  removeExplosion(explosion) {
+    const index = this.explosions.indexOf(explosion);
+    if (index != -1) this.explosions.splice(index, 1);
+  }
+
   reset() {
     this.obstacleSpwan = { pos: 20, offset: 5 };
     this.obstacles.forEach((obstacle) => this.respawnObstacle(obstacle));
+    let count = 0;
+    while (this.explosions.length>0 && count<100){
+      this.explosions[0].onComplete();
+      count++;
+    }
   }
 
   respawnObstacle(obstacle) {
+    console.log(obstacle)
     obstacle.userData.hit = false;
-    obstacle.children.visible = true;
+    obstacle.children.forEach(child=>child.visible = true);
   }
 
   update(posPlayer) {
@@ -155,6 +168,11 @@ export class Obstacles {
         }
       });
     }
+    // explosions
+    this.explosions.forEach(explosion=>{
+      let dt = 0;
+      explosion.update(dt);
+    })
   }
 
   hit(obstacle) {
@@ -162,6 +180,7 @@ export class Obstacles {
     if (obstacle.userData.type === "plant") {
       this.game.incScore();
     } else {
+      this.explosions.push(new Explosion(obstacle, this));
       this.game.decLive();
     }
   }
